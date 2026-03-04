@@ -1,0 +1,1798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GuitarPro — Learn, Practice & Tune</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #ffffff;
+  --surface: #f8f7f4;
+  --surface2: #f0ece4;
+  --border: #e2ddd5;
+  --border2: #ccc7bc;
+  --text: #1a1814;
+  --text2: #5a564f;
+  --text3: #9a9188;
+  --accent: #c17f3a;
+  --accent2: #a06520;
+  --accent-light: #fdf4e7;
+  --green: #3a8c5a;
+  --red: #c04040;
+  --blue: #3a6aac;
+  --shadow: 0 2px 8px rgba(0,0,0,0.07);
+  --shadow2: 0 4px 20px rgba(0,0,0,0.10);
+  --radius: 12px;
+  --radius2: 8px;
+}
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  font-size: 15px;
+  line-height: 1.6;
+}
+/* ─── HEADER ─── */
+header {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 60px;
+}
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px; font-weight: 700;
+  color: var(--text);
+  display: flex; align-items: center; gap: 8px;
+}
+.logo span { color: var(--accent); }
+nav { display: flex; gap: 2px; }
+nav button {
+  background: none; border: none; cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13.5px; font-weight: 500;
+  color: var(--text2);
+  padding: 7px 14px; border-radius: 8px;
+  transition: all 0.15s;
+  display: flex; align-items: center; gap: 6px;
+}
+nav button:hover { background: var(--surface); color: var(--text); }
+nav button.active { background: var(--accent-light); color: var(--accent); }
+.nav-icon { font-size: 15px; }
+/* ─── MAIN ─── */
+main { max-width: 1100px; margin: 0 auto; padding: 32px 20px 60px; }
+.section { display: none; }
+.section.active { display: block; }
+/* ─── SECTION HEADER ─── */
+.sec-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px; font-weight: 700;
+  margin-bottom: 6px;
+}
+.sec-sub { color: var(--text3); font-size: 14px; margin-bottom: 28px; }
+/* ─── CARDS ─── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+.card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 16px; font-weight: 600;
+  margin-bottom: 14px;
+  color: var(--text);
+}
+/* ─── DASHBOARD ─── */
+.dash-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  display: flex; flex-direction: column; gap: 4px;
+}
+.stat-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--text3); }
+.stat-value { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 700; color: var(--text); }
+.stat-meta { font-size: 13px; color: var(--text3); }
+.progress-bar-wrap { background: var(--border); border-radius: 99px; height: 8px; overflow: hidden; }
+.progress-bar { height: 100%; border-radius: 99px; background: var(--accent); transition: width 0.4s; }
+.dash-row { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; }
+.today-plan { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
+.plan-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+.plan-item:last-child { border-bottom: none; }
+.plan-check {
+  width: 20px; height: 20px; border-radius: 6px;
+  border: 2px solid var(--border2); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; transition: all 0.15s;
+  background: white;
+}
+.plan-check.done { background: var(--green); border-color: var(--green); color: white; }
+.plan-name { flex: 1; font-size: 14px; font-weight: 500; }
+.plan-duration { font-size: 12px; color: var(--text3); font-family: 'DM Mono', monospace; }
+.streak-card {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+  border-radius: var(--radius);
+  padding: 20px; color: white;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.streak-card .lbl { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; opacity: 0.8; }
+.streak-card .num { font-family: 'Playfair Display', serif; font-size: 48px; font-weight: 700; }
+.streak-card .sub { font-size: 13px; opacity: 0.75; }
+.week-dots { display: flex; gap: 6px; margin-top: 8px; }
+.week-dot {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: rgba(255,255,255,0.25);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 600;
+}
+.week-dot.done { background: rgba(255,255,255,0.9); color: var(--accent2); }
+.week-dot.today { border: 2px solid white; }
+/* ─── FRETBOARD ─── */
+.fretboard-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  overflow-x: auto;
+}
+.fb-controls { display: flex; gap: 12px; align-items: center; margin-bottom: 16px; flex-wrap: wrap; }
+.fb-label { font-size: 13px; color: var(--text2); font-weight: 500; }
+.fb-btn {
+  background: white; border: 1px solid var(--border);
+  border-radius: 8px; padding: 6px 14px;
+  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+  color: var(--text2); cursor: pointer; transition: all 0.15s;
+}
+.fb-btn:hover { border-color: var(--accent); color: var(--accent); }
+.fb-btn.active { background: var(--accent-light); border-color: var(--accent); color: var(--accent); }
+#fretboard {
+  display: grid;
+  grid-template-rows: repeat(6, 44px);
+  gap: 0;
+  min-width: 720px;
+  position: relative;
+}
+.string-row {
+  display: flex; align-items: center;
+  position: relative;
+}
+.string-name {
+  width: 32px; text-align: center;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px; font-weight: 500;
+  color: var(--text3);
+  flex-shrink: 0;
+}
+.fret-cell {
+  flex: 1; height: 44px; min-width: 52px;
+  position: relative; cursor: pointer;
+  border-right: 2px solid #bbb;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.1s;
+}
+.fret-cell:first-of-type { border-left: 5px solid #555; }
+.fret-cell:hover { background: var(--accent-light); }
+.string-line {
+  position: absolute; left: 0; right: 0;
+  pointer-events: none;
+  border-top-style: solid; border-top-color: #888;
+}
+.fret-dot {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--accent);
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-size: 10px; font-weight: 600;
+  z-index: 2; position: relative;
+  transition: transform 0.1s;
+  box-shadow: 0 2px 6px rgba(193,127,58,0.4);
+}
+.fret-dot.playing { transform: scale(1.15); background: var(--green); }
+.fret-dot.muted { background: var(--red); }
+.fret-marker {
+  position: absolute; bottom: 3px; left: 50%; transform: translateX(-50%);
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--border2);
+}
+.open-btn {
+  width: 26px; height: 26px; border-radius: 50%;
+  border: 2px solid var(--accent); background: white;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  color: var(--accent); font-size: 10px; font-weight: 700;
+  transition: all 0.15s; margin-right: 6px;
+}
+.open-btn:hover { background: var(--accent-light); }
+.mute-btn {
+  width: 26px; height: 26px; border-radius: 50%;
+  border: 2px solid var(--border2); background: white;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  color: var(--text3); font-size: 12px; font-weight: 700;
+  transition: all 0.15s; margin-right: 4px;
+}
+/* ─── CHORDS ─── */
+.chord-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 16px;
+}
+.chord-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+.chord-card:hover { border-color: var(--accent); box-shadow: var(--shadow2); transform: translateY(-2px); }
+.chord-card.playing { border-color: var(--green); background: #f0fff6; }
+.chord-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px; font-weight: 700; color: var(--text);
+}
+.chord-full-name { font-size: 11px; color: var(--text3); }
+.chord-diagram { /* SVG canvas */ }
+.chord-fingering {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; color: var(--text3);
+  letter-spacing: 0.12em;
+}
+.chord-filter { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+.filter-btn {
+  background: white; border: 1px solid var(--border);
+  border-radius: 99px; padding: 5px 14px;
+  font-size: 13px; font-weight: 500; color: var(--text2);
+  cursor: pointer; transition: all 0.15s;
+}
+.filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+.filter-btn.active { background: var(--accent); border-color: var(--accent); color: white; }
+/* ─── EXERCISES ─── */
+.ex-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.ex-builder { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
+.ex-list-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
+.form-group { margin-bottom: 14px; }
+.form-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; color: var(--text2); display: block; margin-bottom: 6px; }
+.form-input, .form-select, .form-textarea {
+  width: 100%;
+  background: white; border: 1px solid var(--border);
+  border-radius: 8px; padding: 9px 12px;
+  font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--text);
+  outline: none; transition: border-color 0.15s;
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--accent); }
+.form-textarea { resize: vertical; min-height: 80px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  padding: 10px 20px; border-radius: 8px;
+  font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600;
+  cursor: pointer; border: none; transition: all 0.15s;
+}
+.btn-primary { background: var(--accent); color: white; }
+.btn-primary:hover { background: var(--accent2); }
+.btn-outline { background: white; border: 1.5px solid var(--border2); color: var(--text2); }
+.btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+.btn-danger { background: #fff0f0; color: var(--red); border: 1px solid #ffcccc; }
+.btn-danger:hover { background: #ffe0e0; }
+.btn-sm { padding: 6px 12px; font-size: 12.5px; }
+.btn-green { background: var(--green); color: white; }
+.ex-item {
+  background: white; border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px;
+  margin-bottom: 10px;
+}
+.ex-item-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+.ex-item-name { font-weight: 600; font-size: 14px; }
+.ex-item-meta { font-size: 12px; color: var(--text3); display: flex; gap: 10px; }
+.ex-item-desc { font-size: 13px; color: var(--text2); margin-top: 4px; }
+.ex-item-actions { display: flex; gap: 6px; margin-top: 10px; }
+.tag {
+  display: inline-flex; align-items: center;
+  background: var(--surface2); border-radius: 99px;
+  padding: 2px 10px; font-size: 11.5px; font-weight: 600;
+  color: var(--text3); text-transform: capitalize;
+}
+.tag.beginner { background: #e8f8ee; color: var(--green); }
+.tag.intermediate { background: #fff3e0; color: #d17000; }
+.tag.advanced { background: #ffeaea; color: var(--red); }
+/* ─── PRACTICE LOG ─── */
+.log-layout { display: grid; grid-template-columns: 1fr 1.4fr; gap: 20px; }
+.log-entry-form { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
+.log-history { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
+.log-item {
+  background: white; border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px; margin-bottom: 10px;
+}
+.log-item-date { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; color: var(--text3); }
+.log-item-title { font-weight: 600; font-size: 14px; margin-top: 2px; }
+.log-item-details { font-size: 13px; color: var(--text2); margin-top: 4px; }
+.log-stats { display: flex; gap: 12px; margin-top: 8px; }
+.log-stat { font-size: 12px; color: var(--text3); display: flex; align-items: center; gap: 4px; }
+.goals-wrap { margin-top: 20px; }
+.goal-item {
+  background: white; border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px; margin-bottom: 10px;
+}
+.goal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.goal-name { font-weight: 600; font-size: 14px; }
+.goal-pct { font-family: 'DM Mono', monospace; font-size: 13px; color: var(--accent); font-weight: 600; }
+/* ─── TUNER ─── */
+.tuner-layout { display: grid; grid-template-columns: 1.2fr 1fr; gap: 20px; }
+.tuner-main {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 28px;
+  display: flex; flex-direction: column; align-items: center; gap: 20px;
+}
+.tuner-display {
+  width: 240px; height: 240px; border-radius: 50%;
+  border: 3px solid var(--border);
+  background: white;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 8px;
+  position: relative;
+  box-shadow: inset 0 2px 12px rgba(0,0,0,0.05);
+}
+.tuner-note {
+  font-family: 'Playfair Display', serif;
+  font-size: 64px; font-weight: 700;
+  color: var(--text);
+  line-height: 1;
+}
+.tuner-freq {
+  font-family: 'DM Mono', monospace;
+  font-size: 14px; color: var(--text3);
+}
+.tuner-cents {
+  font-family: 'DM Mono', monospace;
+  font-size: 14px; font-weight: 600;
+}
+.tuner-cents.flat { color: var(--blue); }
+.tuner-cents.sharp { color: var(--red); }
+.tuner-cents.in-tune { color: var(--green); }
+.tuner-needle-wrap {
+  width: 280px; height: 50px;
+  position: relative; overflow: hidden;
+}
+.tuner-needle-track {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 3px; background: var(--border);
+  border-radius: 99px;
+}
+.tuner-needle-center {
+  position: absolute; bottom: -4px; left: 50%; transform: translateX(-50%);
+  width: 11px; height: 11px; border-radius: 50%;
+  background: var(--accent);
+}
+.tuner-needle {
+  position: absolute; bottom: -1px;
+  width: 3px; height: 40px; border-radius: 2px;
+  background: var(--text); transform-origin: bottom center;
+  left: 50%; margin-left: -1.5px;
+  transition: transform 0.1s;
+}
+.tuner-status {
+  font-size: 13px; font-weight: 600; padding: 6px 16px;
+  border-radius: 99px; transition: all 0.2s;
+}
+.tuner-status.listening { background: var(--surface2); color: var(--text3); }
+.tuner-status.in-tune { background: #e8f8ee; color: var(--green); }
+.tuner-status.flat { background: #e8f0ff; color: var(--blue); }
+.tuner-status.sharp { background: #fff0f0; color: var(--red); }
+.ref-strings {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px;
+}
+.ref-string-item {
+  display: flex; align-items: center;
+  padding: 10px 0; border-bottom: 1px solid var(--border);
+}
+.ref-string-item:last-child { border-bottom: none; }
+.ref-num {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--surface2); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; color: var(--text2);
+  margin-right: 12px; flex-shrink: 0;
+}
+.ref-note { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; flex: 1; }
+.ref-freq-text { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--text3); margin-right: 12px; }
+.ref-play-btn {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: var(--accent-light); border: 1.5px solid var(--accent);
+  color: var(--accent); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; transition: all 0.15s;
+}
+.ref-play-btn:hover { background: var(--accent); color: white; }
+.ref-play-btn.active { background: var(--accent); color: white; }
+/* ─── CHORD PLAYER BOX ─── */
+.chord-detail {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px; margin-top: 20px;
+}
+/* ─── TOAST ─── */
+.toast {
+  position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(20px);
+  background: var(--text); color: white;
+  padding: 10px 22px; border-radius: 99px; font-size: 13.5px; font-weight: 500;
+  opacity: 0; pointer-events: none; transition: all 0.25s;
+  z-index: 999;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+/* ─── RESPONSIVE ─── */
+@media (max-width: 768px) {
+  .dash-grid { grid-template-columns: 1fr 1fr; }
+  .dash-row, .ex-layout, .log-layout, .tuner-layout { grid-template-columns: 1fr; }
+  nav button span.nav-label { display: none; }
+}
+@media (max-width: 520px) {
+  .dash-grid { grid-template-columns: 1fr; }
+}
+/* Fret position markers */
+.fret-pos-3::after, .fret-pos-5::after, .fret-pos-7::after, .fret-pos-9::after { content: ''; display: block; width: 8px; height: 8px; border-radius: 50%; background: var(--border2); position: absolute; bottom: -2px; left: 50%; transform: translateX(-50%); }
+/* animate strum */
+@keyframes strum { 0%{opacity:1} 100%{opacity:0} }
+.strum-flash { animation: strum 0.3s ease-out; }
+/* section fade */
+@keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+.section.active { animation: fadeIn 0.2s ease-out; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">🎸 Guitar<span>Pro</span></div>
+  <nav>
+    <button class="active" onclick="showSection('dashboard',this)"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></button>
+    <button onclick="showSection('fretboard',this)"><span class="nav-icon">🎵</span><span class="nav-label">Play</span></button>
+    <button onclick="showSection('chords',this)"><span class="nav-icon">🤚</span><span class="nav-label">Chords</span></button>
+    <button onclick="showSection('exercises',this)"><span class="nav-icon">💪</span><span class="nav-label">Exercises</span></button>
+    <button onclick="showSection('practice',this)"><span class="nav-icon">📋</span><span class="nav-label">Practice Log</span></button>
+    <button onclick="showSection('tuner',this)"><span class="nav-icon">🎚️</span><span class="nav-label">Tuner</span></button>
+  </nav>
+</header>
+
+<main>
+<!-- ══════════════ DASHBOARD ══════════════ -->
+<section id="dashboard" class="section active">
+  <div class="sec-title">Good <span id="greeting-time">morning</span> 🎸</div>
+  <div class="sec-sub">Aaj ka practice plan aur progress dekhein</div>
+
+  <div class="dash-grid">
+    <div class="stat-card">
+      <div class="stat-label">Aaj ki Practice</div>
+      <div class="stat-value" id="today-minutes">0</div>
+      <div class="stat-meta">minutes practiced</div>
+      <div style="margin-top:10px">
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text3);margin-bottom:4px">
+          <span>Goal: <span id="goal-display">30</span> min</span>
+          <span id="goal-pct-text">0%</span>
+        </div>
+        <div class="progress-bar-wrap"><div class="progress-bar" id="today-progress" style="width:0%"></div></div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Is Hafte</div>
+      <div class="stat-value" id="week-sessions">0</div>
+      <div class="stat-meta">sessions this week</div>
+      <div style="margin-top:8px;font-size:12px;color:var(--text3)">Total: <strong id="week-total-min">0</strong> minutes</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Chords Seekhe</div>
+      <div class="stat-value" id="chords-learned">0</div>
+      <div class="stat-meta">chords practiced</div>
+    </div>
+  </div>
+
+  <div class="dash-row">
+    <div class="today-plan card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+        <div class="card-title" style="margin:0">📅 Aaj Ka Plan</div>
+        <button class="btn btn-outline btn-sm" onclick="showSection('practice', document.querySelectorAll('nav button')[4])">+ Log Session</button>
+      </div>
+      <div id="today-plan-list">
+        <div style="text-align:center;padding:20px;color:var(--text3);font-size:14px">
+          Practice Log mein session add karein 🎸
+        </div>
+      </div>
+    </div>
+    <div class="streak-card">
+      <div class="lbl">🔥 Current Streak</div>
+      <div class="num" id="streak-num">0</div>
+      <div class="sub">din ka streak</div>
+      <div class="week-dots" id="week-dots"></div>
+    </div>
+  </div>
+
+  <div style="margin-top:20px" class="card">
+    <div class="card-title">🎯 Daily Practice Goal</div>
+    <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+      <div style="flex:1;min-width:200px">
+        <label class="form-label">Daily Goal (minutes)</label>
+        <input type="number" class="form-input" id="daily-goal-input" value="30" min="5" max="180" style="width:120px">
+      </div>
+      <button class="btn btn-primary" onclick="saveDailyGoal()">Save Goal</button>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ FRETBOARD ══════════════ -->
+<section id="fretboard" class="section">
+  <div class="sec-title">Virtual Guitar 🎸</div>
+  <div class="sec-sub">Koi bhi fret click karein — note sunein. Chord select karke strum karein!</div>
+
+  <div class="fretboard-wrap">
+    <div class="fb-controls">
+      <span class="fb-label">Chord:</span>
+      <div id="chord-quick-btns" style="display:flex;gap:6px;flex-wrap:wrap"></div>
+      <button class="fb-btn" onclick="strumCurrentChord()">▶ Strum</button>
+      <button class="fb-btn" onclick="clearFretboard()">✕ Clear</button>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:8px">
+        <span class="fb-label">Volume:</span>
+        <input type="range" id="fb-volume" min="0" max="100" value="70" style="width:80px;accent-color:var(--accent)">
+      </div>
+    </div>
+    <div id="fretboard"></div>
+    <div style="display:flex;gap:16px;margin-top:12px;font-size:12px;color:var(--text3)">
+      <span>💡 <strong>Tip:</strong> String pe click → note bajao</span>
+      <span>🎸 Open string (O) = khuli taanth</span>
+      <span>✕ = Muted (nahi bajana)</span>
+    </div>
+  </div>
+
+  <div style="margin-top:20px" class="card">
+    <div class="card-title">🎼 Note Reference</div>
+    <div id="note-ref" style="display:flex;gap:8px;flex-wrap:wrap"></div>
+  </div>
+</section>
+
+<!-- ══════════════ CHORDS ══════════════ -->
+<section id="chords" class="section">
+  <div class="sec-title">Chord Library 🤚</div>
+  <div class="sec-sub">Kisi bhi chord pe click karein — sound sunein aur diagram dekhein</div>
+
+  <div class="chord-filter">
+    <button class="filter-btn active" onclick="filterChords('all',this)">All</button>
+    <button class="filter-btn" onclick="filterChords('major',this)">Major</button>
+    <button class="filter-btn" onclick="filterChords('minor',this)">Minor</button>
+    <button class="filter-btn" onclick="filterChords('seventh',this)">7th</button>
+    <button class="filter-btn" onclick="filterChords('beginner',this)">Beginner</button>
+  </div>
+  <div class="chord-grid" id="chord-grid"></div>
+
+  <div class="chord-detail" id="chord-detail" style="display:none">
+    <div style="display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap">
+      <canvas id="chord-detail-canvas" width="160" height="180" style="border-radius:8px;border:1px solid var(--border)"></canvas>
+      <div style="flex:1">
+        <div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:700" id="detail-name"></div>
+        <div style="color:var(--text3);font-size:13px;margin-bottom:12px" id="detail-fullname"></div>
+        <div style="font-size:14px;color:var(--text2);margin-bottom:12px" id="detail-desc"></div>
+        <div style="font-family:'DM Mono',monospace;font-size:13px;color:var(--text3);margin-bottom:12px">Fingering: <span id="detail-fingering"></span></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-primary" id="detail-play-btn" onclick="playDetailChord()">▶ Play Chord</button>
+          <button class="btn btn-outline" onclick="document.getElementById('chord-detail').style.display='none'">Close</button>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
+      <div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:8px">Yeh chord use hoti hai:</div>
+      <div id="detail-songs" style="font-size:13px;color:var(--text3)"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ EXERCISES ══════════════ -->
+<section id="exercises" class="section">
+  <div class="sec-title">Exercise Builder 💪</div>
+  <div class="sec-sub">Apna custom exercise banao aur save karo</div>
+
+  <div class="ex-layout">
+    <div class="ex-builder">
+      <div class="card-title">✏️ Naya Exercise Banao</div>
+      <div class="form-group">
+        <label class="form-label">Exercise Ka Naam</label>
+        <input class="form-input" id="ex-name" placeholder="e.g. Basic Chord Transitions">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Duration (minutes)</label>
+          <input class="form-input" type="number" id="ex-duration" value="10" min="1" max="60">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Level</label>
+          <select class="form-select" id="ex-level">
+            <option value="beginner">Beginner</option>
+            <option value="intermediate">Intermediate</option>
+            <option value="advanced">Advanced</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Type</label>
+        <select class="form-select" id="ex-type">
+          <option value="chord">Chord Practice</option>
+          <option value="scale">Scale Practice</option>
+          <option value="strumming">Strumming Pattern</option>
+          <option value="fingerpicking">Fingerpicking</option>
+          <option value="song">Song Practice</option>
+          <option value="warmup">Warm Up</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Description / Notes</label>
+        <textarea class="form-textarea" id="ex-desc" placeholder="Kya karna hai is exercise mein? Chords, pattern, etc..."></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Chords (comma separated)</label>
+        <input class="form-input" id="ex-chords" placeholder="e.g. Am, C, G, Em">
+      </div>
+      <div class="form-group">
+        <label class="form-label">BPM (optional)</label>
+        <input class="form-input" type="number" id="ex-bpm" placeholder="e.g. 80">
+      </div>
+      <button class="btn btn-primary" style="width:100%" onclick="saveExercise()">💾 Save Exercise</button>
+    </div>
+
+    <div class="ex-list-wrap">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+        <div class="card-title" style="margin:0">📚 Saved Exercises</div>
+        <span id="ex-count" style="font-size:12px;color:var(--text3)">0 exercises</span>
+      </div>
+      <div id="ex-list">
+        <div style="text-align:center;padding:30px;color:var(--text3);font-size:14px">
+          Koi exercise nahi hai abhi.<br>Pehla exercise banao! 🎸
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Built-in Exercises -->
+  <div style="margin-top:24px" class="card">
+    <div class="card-title">🌟 Suggested Exercises (Beginners ke liye)</div>
+    <div id="suggested-exercises"></div>
+  </div>
+</section>
+
+<!-- ══════════════ PRACTICE LOG ══════════════ -->
+<section id="practice" class="section">
+  <div class="sec-title">Practice Log 📋</div>
+  <div class="sec-sub">Apni practice track karo, progress dekhte raho</div>
+
+  <div class="log-layout">
+    <div class="log-entry-form">
+      <div class="card-title">+ Aaj Ki Practice Log Karo</div>
+      <div class="form-group">
+        <label class="form-label">Date</label>
+        <input class="form-input" type="date" id="log-date">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Kya Kiya? (Title)</label>
+        <input class="form-input" id="log-title" placeholder="e.g. Am-C-G Transitions Practice">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Duration (min)</label>
+          <input class="form-input" type="number" id="log-duration" value="20" min="1">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Mood / Rating</label>
+          <select class="form-select" id="log-mood">
+            <option value="5">⭐⭐⭐⭐⭐ Bahut Accha</option>
+            <option value="4">⭐⭐⭐⭐ Accha</option>
+            <option value="3" selected>⭐⭐⭐ Theek Tha</option>
+            <option value="2">⭐⭐ Thoda Mushkil</option>
+            <option value="1">⭐ Bahut Mushkil</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Notes (optional)</label>
+        <textarea class="form-textarea" id="log-notes" placeholder="Kya seekha? Kya mushkil tha?"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Chords Practiced</label>
+        <input class="form-input" id="log-chords" placeholder="e.g. Am, C, G">
+      </div>
+      <button class="btn btn-primary" style="width:100%" onclick="saveLogEntry()">💾 Save Entry</button>
+
+      <div style="margin-top:20px;padding-top:20px;border-top:1px solid var(--border)">
+        <div class="card-title">🎯 Practice Goals</div>
+        <div class="form-group">
+          <label class="form-label">New Goal</label>
+          <input class="form-input" id="goal-name" placeholder="e.g. F chord perfectly sikhna">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Target (days)</label>
+            <input class="form-input" type="number" id="goal-target" value="30" min="1">
+          </div>
+          <div class="form-group" style="display:flex;align-items:flex-end">
+            <button class="btn btn-outline" style="width:100%" onclick="addGoal()">+ Add Goal</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="log-history">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+        <div class="card-title" style="margin:0">📜 History</div>
+        <div id="total-practice-time" style="font-size:13px;color:var(--text3)"></div>
+      </div>
+      <div id="log-list">
+        <div style="text-align:center;padding:30px;color:var(--text3);font-size:14px">
+          Abhi koi entry nahi.<br>Pehla session log karo! 🎸
+        </div>
+      </div>
+      <div class="goals-wrap">
+        <div class="card-title">🎯 Goals</div>
+        <div id="goals-list">
+          <div style="text-align:center;padding:16px;color:var(--text3);font-size:14px">Koi goal set nahi hua</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ TUNER ══════════════ -->
+<section id="tuner" class="section">
+  <div class="sec-title">Guitar Tuner 🎚️</div>
+  <div class="sec-sub">Microphone se tune karo ya reference notes sunke match karo</div>
+
+  <div class="tuner-layout">
+    <div class="tuner-main">
+      <div class="tuner-display" id="tuner-display">
+        <div class="tuner-note" id="tuner-note">—</div>
+        <div class="tuner-freq" id="tuner-freq">— Hz</div>
+        <div class="tuner-cents" id="tuner-cents">— cents</div>
+      </div>
+
+      <div class="tuner-needle-wrap">
+        <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text3);margin-bottom:4px">
+          <span>♭ FLAT</span><span>IN TUNE</span><span>SHARP ♯</span>
+        </div>
+        <div class="tuner-needle-track"></div>
+        <div class="tuner-needle-center"></div>
+        <div class="tuner-needle" id="tuner-needle"></div>
+      </div>
+
+      <div class="tuner-status listening" id="tuner-status">Mic start karo</div>
+
+      <div style="display:flex;gap:10px">
+        <button class="btn btn-primary" id="tuner-start-btn" onclick="startTuner()">🎙️ Mic Start Karo</button>
+        <button class="btn btn-outline" id="tuner-stop-btn" onclick="stopTuner()" style="display:none">⏹️ Stop</button>
+      </div>
+
+      <div style="font-size:12px;color:var(--text3);text-align:center;max-width:260px">
+        💡 Guitar string bajao mic ke paas. App automatic frequency detect karega.
+      </div>
+    </div>
+
+    <div class="ref-strings">
+      <div class="card-title">🎵 Reference Notes — Standard Tuning</div>
+      <div style="font-size:12px;color:var(--text3);margin-bottom:12px">Click karke suno aur guitar match karo</div>
+      <div id="ref-string-list"></div>
+
+      <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border)">
+        <div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:12px">🎼 Other Tunings</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <button class="fb-btn" onclick="setTuning('standard')" style="text-align:left">Standard (EADGBe)</button>
+          <button class="fb-btn" onclick="setTuning('drop_d')" style="text-align:left">Drop D (DADGBe)</button>
+          <button class="fb-btn" onclick="setTuning('open_g')" style="text-align:left">Open G (DGDGBd)</button>
+          <button class="fb-btn" onclick="setTuning('open_d')" style="text-align:left">Open D (DADf#ad)</button>
+          <button class="fb-btn" onclick="setTuning('dadgad')" style="text-align:left">DADGAD</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:20px" class="card">
+    <div class="card-title">💡 Tuning Tips</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;font-size:13px;color:var(--text2)">
+      <div><strong>🎸 Kaise Tune Karein:</strong><br>Sabse pehle 6th string (E) se shuru karein. Ek ek karke upar aayein.</div>
+      <div><strong>⬆️ Agar Flat (neecha) hai:</strong><br>Peg ko tighten karein (zyada tension = zyada pitch)</div>
+      <div><strong>⬇️ Agar Sharp (zyada) hai:</strong><br>Peg dhila karein thoda (kam tension = kam pitch)</div>
+    </div>
+  </div>
+</section>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════
+//  WEB AUDIO ENGINE
+// ══════════════════════════════════════
+let audioCtx = null;
+function getAudioCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  return audioCtx;
+}
+
+// Guitar-like pluck sound using Karplus-Strong algorithm approximation
+function playNote(freq, duration = 1.4, volume = 0.7) {
+  const ctx = getAudioCtx();
+  const gain = ctx.createGain();
+  const now = ctx.currentTime;
+
+  // Create a buffer of noise
+  const bufLen = Math.round(ctx.sampleRate / freq);
+  const buffer = ctx.createBuffer(1, bufLen, ctx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for (let i = 0; i < bufLen; i++) data[i] = Math.random() * 2 - 1;
+
+  // Oscillator blend
+  const osc = ctx.createOscillator();
+  osc.type = 'triangle';
+  osc.frequency.setValueAtTime(freq, now);
+
+  const oscGain = ctx.createGain();
+  oscGain.gain.setValueAtTime(0.15 * volume, now);
+  oscGain.gain.exponentialRampToValueAtTime(0.001, now + duration * 0.4);
+  osc.connect(oscGain);
+
+  // Noise source
+  const source = ctx.createBufferSource();
+  source.buffer = buffer;
+  source.loop = true;
+
+  const sourceGain = ctx.createGain();
+  sourceGain.gain.setValueAtTime(0.6 * volume, now);
+  sourceGain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+  source.connect(sourceGain);
+
+  // Filter for warmth
+  const filter = ctx.createBiquadFilter();
+  filter.type = 'lowpass';
+  filter.frequency.setValueAtTime(3000, now);
+  filter.frequency.exponentialRampToValueAtTime(500, now + duration * 0.5);
+
+  gain.gain.setValueAtTime(volume, now);
+  gain.gain.exponentialRampToValueAtTime(0.001, now + duration + 0.1);
+
+  oscGain.connect(filter);
+  sourceGain.connect(filter);
+  filter.connect(gain);
+  gain.connect(ctx.destination);
+
+  source.start(now);
+  osc.start(now);
+  source.stop(now + duration + 0.2);
+  osc.stop(now + duration + 0.2);
+}
+
+// String frequencies (open, standard tuning)
+const STRING_OPEN = [82.41, 110.00, 146.83, 196.00, 246.94, 329.63]; // E2 A2 D3 G3 B3 E4
+const STRING_NAMES = ['E', 'A', 'D', 'G', 'B', 'e'];
+const NOTE_NAMES = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+
+function fretFreq(stringIdx, fret) {
+  return STRING_OPEN[stringIdx] * Math.pow(2, fret / 12);
+}
+function freqToNote(freq) {
+  const noteNum = 12 * Math.log2(freq / 440) + 69;
+  const rounded = Math.round(noteNum);
+  const cents = Math.round((noteNum - rounded) * 100);
+  const note = NOTE_NAMES[((rounded % 12) + 12) % 12];
+  const octave = Math.floor(rounded / 12) - 1;
+  return { note, octave, cents, noteNum };
+}
+
+function playFret(stringIdx, fret) {
+  const freq = fretFreq(stringIdx, fret);
+  const vol = document.getElementById('fb-volume') ? document.getElementById('fb-volume').value / 100 : 0.7;
+  playNote(freq, 1.2, vol * 0.8);
+}
+
+// ══════════════════════════════════════
+//  CHORD DATA
+// ══════════════════════════════════════
+const CHORDS = [
+  { name:'Em', full:'E Minor', frets:[0,2,2,0,0,0], fingers:[0,2,3,0,0,0], type:'minor', level:'beginner', desc:'Sabse aasan chord! Sirf 2 ungliyan use hoti hain.', songs:'Wonderwall, Nothing Else Matters, House of the Rising Sun' },
+  { name:'Am', full:'A Minor', frets:[-1,0,2,2,1,0], fingers:[0,0,2,3,1,0], type:'minor', level:'beginner', desc:'Bohot popular chord. 3 ungliyan use hoti hain.', songs:'Stairway to Heaven, Shape of You, Hotel California' },
+  { name:'C',  full:'C Major', frets:[-1,3,2,0,1,0], fingers:[0,3,2,0,1,0], type:'major', level:'beginner', desc:'Bohot zaruri chord. C-G-Am-F sabse common progression hai.', songs:'Let Her Go, Tum Hi Ho, Counting Stars' },
+  { name:'G',  full:'G Major', frets:[3,2,0,0,0,3], fingers:[2,1,0,0,0,3], type:'major', level:'beginner', desc:'G chord thoda stretch karta hai, lekin bohot useful!', songs:'Wonderwall, Brown Eyed Girl, Free Fallin' },
+  { name:'D',  full:'D Major', frets:[-1,-1,0,2,3,2], fingers:[0,0,0,1,3,2], type:'major', level:'beginner', desc:'D chord triangle shape mein fingers lagti hain.', songs:'Brown Eyed Girl, Knockin on Heaven Door' },
+  { name:'E',  full:'E Major', frets:[0,2,2,1,0,0], fingers:[0,2,3,1,0,0], type:'major', level:'beginner', desc:'E major ek classic rock chord hai!', songs:'Sweet Home Alabama, Enter Sandman' },
+  { name:'A',  full:'A Major', frets:[-1,0,2,2,2,0], fingers:[0,0,1,2,3,0], type:'major', level:'beginner', desc:'A chord mein teeno fingers ek fret mein hain.', songs:'Knockin on Heavens Door, Wish You Were Here' },
+  { name:'Dm', full:'D Minor', frets:[-1,-1,0,2,3,1], fingers:[0,0,0,2,3,1], type:'minor', level:'beginner', desc:'D minor ek melancholic aur beautiful chord hai.', songs:'One (U2), La Bamba' },
+  { name:'F',  full:'F Major', frets:[1,3,3,2,1,1], fingers:[1,3,4,2,1,1], type:'major', level:'intermediate', desc:'F chord beginner ka sabse bada challenge! Barre chord hai.', songs:'Wonderwall, Tum Hi Ho, Perfect' },
+  { name:'B7', full:'B Dominant 7th', frets:[-1,2,1,2,0,2], fingers:[0,2,1,3,0,4], type:'seventh', level:'intermediate', desc:'B7 ek great transitional chord hai.', songs:'Norwegian Wood, I Wanna Be Your Man' },
+  { name:'E7', full:'E Dominant 7th', frets:[0,2,0,1,0,0], fingers:[0,2,0,1,0,0], type:'seventh', level:'beginner', desc:'E7 bohot easy hai, E se just ek finger remove karo!', songs:'Crossroads, Come Together' },
+  { name:'A7', full:'A Dominant 7th', frets:[-1,0,2,0,2,0], fingers:[0,0,2,0,3,0], type:'seventh', level:'beginner', desc:'A7 mein sirf 2 fingers use hoti hain!', songs:'La Grange, Pride and Joy' },
+  { name:'Cmaj7', full:'C Major 7th', frets:[-1,3,2,0,0,0], fingers:[0,3,2,0,0,0], type:'seventh', level:'intermediate', desc:'Cmaj7 ek jazzy aur beautiful sound deta hai.', songs:'Blackbird, More Than Words' },
+  { name:'Bm', full:'B Minor', frets:[-1,2,4,4,3,2], fingers:[0,1,3,4,2,1], type:'minor', level:'advanced', desc:'Bm barre chord hai, bohot common songs mein aata hai.', songs:'Wish You Were Here, Zombie' },
+  { name:'G7', full:'G Dominant 7th', frets:[3,2,0,0,0,1], fingers:[3,2,0,0,0,1], type:'seventh', level:'intermediate', desc:'G7 ek bluesy sound deta hai.', songs:'Knockin on Heavens Door Blues version' },
+];
+
+let currentDetailChord = null;
+
+// ══════════════════════════════════════
+//  LOCAL STORAGE
+// ══════════════════════════════════════
+function save(key, val) { localStorage.setItem('gp_' + key, JSON.stringify(val)); }
+function load(key, def) { const v = localStorage.getItem('gp_' + key); return v ? JSON.parse(v) : def; }
+
+// ══════════════════════════════════════
+//  NAV
+// ══════════════════════════════════════
+function showSection(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+}
+
+// ══════════════════════════════════════
+//  DASHBOARD
+// ══════════════════════════════════════
+function initDashboard() {
+  const hour = new Date().getHours();
+  document.getElementById('greeting-time').textContent =
+    hour < 12 ? 'morning ☀️' : hour < 17 ? 'afternoon 🌤️' : 'evening 🌙';
+
+  const dailyGoal = load('daily_goal', 30);
+  document.getElementById('daily-goal-input').value = dailyGoal;
+  document.getElementById('goal-display').textContent = dailyGoal;
+
+  updateDashboard();
+  renderWeekDots();
+}
+
+function saveDailyGoal() {
+  const val = parseInt(document.getElementById('daily-goal-input').value) || 30;
+  save('daily_goal', val);
+  document.getElementById('goal-display').textContent = val;
+  updateDashboard();
+  showToast('Daily goal saved: ' + val + ' minutes ✅');
+}
+
+function updateDashboard() {
+  const logs = load('logs', []);
+  const today = new Date().toISOString().split('T')[0];
+  const dailyGoal = load('daily_goal', 30);
+
+  const todayLogs = logs.filter(l => l.date === today);
+  const todayMins = todayLogs.reduce((a,b) => a + (b.duration||0), 0);
+  document.getElementById('today-minutes').textContent = todayMins;
+  const pct = Math.min(100, Math.round(todayMins / dailyGoal * 100));
+  document.getElementById('today-progress').style.width = pct + '%';
+  document.getElementById('goal-pct-text').textContent = pct + '%';
+
+  // Week
+  const weekStart = new Date(); weekStart.setDate(weekStart.getDate() - 6);
+  const weekLogs = logs.filter(l => new Date(l.date) >= weekStart);
+  const weekSessions = new Set(weekLogs.map(l => l.date)).size;
+  const weekTotalMin = weekLogs.reduce((a,b) => a + (b.duration||0), 0);
+  document.getElementById('week-sessions').textContent = weekSessions;
+  document.getElementById('week-total-min').textContent = weekTotalMin;
+
+  // Chords
+  const allChords = new Set();
+  logs.forEach(l => (l.chords||'').split(',').map(c=>c.trim()).filter(Boolean).forEach(c=>allChords.add(c)));
+  document.getElementById('chords-learned').textContent = allChords.size;
+
+  // Streak
+  let streak = 0, d = new Date();
+  while (true) {
+    const ds = d.toISOString().split('T')[0];
+    if (logs.find(l => l.date === ds)) { streak++; d.setDate(d.getDate()-1); }
+    else break;
+  }
+  document.getElementById('streak-num').textContent = streak;
+
+  // Today plan
+  const planList = document.getElementById('today-plan-list');
+  if (todayLogs.length > 0) {
+    planList.innerHTML = todayLogs.map(l => `
+      <div class="plan-item">
+        <div class="plan-check done">✓</div>
+        <div class="plan-name">${l.title}</div>
+        <div class="plan-duration">${l.duration} min</div>
+      </div>`).join('');
+  } else {
+    planList.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text3);font-size:14px">Practice Log mein session add karein 🎸</div>';
+  }
+}
+
+function renderWeekDots() {
+  const logs = load('logs', []);
+  const container = document.getElementById('week-dots');
+  const days = ['S','M','T','W','T','F','S'];
+  const today = new Date();
+  container.innerHTML = '';
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(today); d.setDate(today.getDate() - i);
+    const ds = d.toISOString().split('T')[0];
+    const hasLog = logs.some(l => l.date === ds);
+    const isToday = i === 0;
+    const dot = document.createElement('div');
+    dot.className = 'week-dot' + (hasLog ? ' done' : '') + (isToday ? ' today' : '');
+    dot.textContent = days[d.getDay()];
+    container.appendChild(dot);
+  }
+}
+
+// ══════════════════════════════════════
+//  FRETBOARD
+// ══════════════════════════════════════
+const NUM_FRETS = 12;
+let fretboardState = {}; // {string: fret} or {string: 'x'}
+let currentChordName = '';
+
+function buildFretboard() {
+  const fb = document.getElementById('fretboard');
+  fb.innerHTML = '';
+  const stringThickness = [3, 2.5, 2, 1.5, 1, 0.8];
+
+  for (let s = 0; s < 6; s++) {
+    const row = document.createElement('div');
+    row.className = 'string-row';
+
+    // String name
+    const nameEl = document.createElement('div');
+    nameEl.className = 'string-name';
+    nameEl.textContent = STRING_NAMES[s];
+    row.appendChild(nameEl);
+
+    // Mute button
+    const muteBtn = document.createElement('div');
+    muteBtn.className = 'mute-btn';
+    muteBtn.textContent = '×';
+    muteBtn.title = 'Mute this string';
+    muteBtn.onclick = () => { fretboardState[s] = 'x'; renderFretboardState(); };
+    row.appendChild(muteBtn);
+
+    // Open button
+    const openBtn = document.createElement('div');
+    openBtn.className = 'open-btn';
+    openBtn.textContent = 'O';
+    openBtn.title = 'Play open string';
+    openBtn.onclick = () => { fretboardState[s] = 0; playFret(s, 0); renderFretboardState(); };
+    row.appendChild(openBtn);
+
+    // Frets
+    for (let f = 1; f <= NUM_FRETS; f++) {
+      const cell = document.createElement('div');
+      cell.className = 'fret-cell';
+      if ([3,5,7,9,12].includes(f) && s === 5) {
+        const marker = document.createElement('div');
+        marker.className = 'fret-marker';
+        cell.appendChild(marker);
+      }
+      // String line
+      const line = document.createElement('div');
+      line.className = 'string-line';
+      line.style.borderTopWidth = stringThickness[s] + 'px';
+      cell.appendChild(line);
+
+      // Dot if selected
+      const dotKey = s + '_' + f;
+      const dot = document.createElement('div');
+      dot.className = 'fret-dot';
+      dot.id = 'dot_' + dotKey;
+      dot.style.display = 'none';
+      const info = freqToNote(fretFreq(s, f));
+      dot.textContent = info.note;
+      cell.appendChild(dot);
+
+      cell.onclick = () => {
+        fretboardState[s] = f;
+        playFret(s, f);
+        renderFretboardState();
+      };
+      row.appendChild(cell);
+    }
+    fb.appendChild(row);
+  }
+
+  // Fret numbers
+  const numRow = document.createElement('div');
+  numRow.style.cssText = 'display:flex;padding-left:100px;';
+  for (let f = 1; f <= NUM_FRETS; f++) {
+    const n = document.createElement('div');
+    n.style.cssText = `flex:1;text-align:center;font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;min-width:52px;`;
+    n.textContent = f;
+    numRow.appendChild(n);
+  }
+  fb.parentElement.appendChild(numRow);
+
+  buildQuickChordBtns();
+  buildNoteRef();
+}
+
+function renderFretboardState() {
+  // Clear all dots first
+  document.querySelectorAll('.fret-dot').forEach(d => d.style.display = 'none');
+  for (const [s, f] of Object.entries(fretboardState)) {
+    if (f === 'x') continue;
+    if (f === 0) continue;
+    const el = document.getElementById('dot_' + s + '_' + f);
+    if (el) { el.style.display = 'flex'; el.classList.remove('muted'); }
+  }
+}
+
+function buildQuickChordBtns() {
+  const container = document.getElementById('chord-quick-btns');
+  ['Em','Am','C','G','D','E','A','Dm','F'].forEach(name => {
+    const btn = document.createElement('button');
+    btn.className = 'fb-btn';
+    btn.textContent = name;
+    btn.onclick = () => selectChordOnFretboard(name, btn);
+    container.appendChild(btn);
+  });
+}
+
+function selectChordOnFretboard(name, btn) {
+  const chord = CHORDS.find(c => c.name === name);
+  if (!chord) return;
+  document.querySelectorAll('#chord-quick-btns .fb-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  fretboardState = {};
+  chord.frets.forEach((f, i) => { fretboardState[i] = f; });
+  currentChordName = name;
+  renderFretboardState();
+}
+
+function strumCurrentChord() {
+  const chord = CHORDS.find(c => c.name === currentChordName);
+  if (chord) {
+    playChord(chord.frets);
+  } else {
+    // Play whatever is on fretboard
+    Object.entries(fretboardState).forEach(([s, f], idx) => {
+      if (f !== 'x') {
+        setTimeout(() => playFret(parseInt(s), f === 0 ? 0 : f), idx * 60);
+      }
+    });
+  }
+}
+
+function playChord(frets, delay = 60) {
+  frets.forEach((f, s) => {
+    if (f >= 0) {
+      setTimeout(() => playFret(s, f), s * delay);
+    }
+  });
+}
+
+function clearFretboard() {
+  fretboardState = {};
+  currentChordName = '';
+  document.querySelectorAll('.fret-dot').forEach(d => d.style.display = 'none');
+  document.querySelectorAll('#chord-quick-btns .fb-btn').forEach(b => b.classList.remove('active'));
+}
+
+function buildNoteRef() {
+  const container = document.getElementById('note-ref');
+  STRING_NAMES.forEach((name, s) => {
+    const item = document.createElement('div');
+    item.style.cssText = 'background:white;border:1px solid var(--border);border-radius:8px;padding:10px 14px;cursor:pointer;transition:all 0.15s;';
+    item.innerHTML = `<div style="font-size:11px;color:var(--text3);margin-bottom:2px">String ${6-s}</div><div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700">${name}</div><div style="font-size:11px;color:var(--text3);font-family:'DM Mono',monospace">${STRING_OPEN[s].toFixed(1)} Hz</div>`;
+    item.onmouseenter = () => item.style.borderColor = 'var(--accent)';
+    item.onmouseleave = () => item.style.borderColor = 'var(--border)';
+    item.onclick = () => playFret(s, 0);
+    container.appendChild(item);
+  });
+}
+
+// ══════════════════════════════════════
+//  CHORDS SECTION
+// ══════════════════════════════════════
+function drawChordDiagram(canvas, frets, fingers, small = false) {
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  ctx.clearRect(0, 0, w, h);
+
+  const margin = small ? 14 : 20;
+  const strW = (w - margin * 2) / 5;
+  const fretH = (h - margin * 2 - 20) / 4;
+  const dots = 4;
+
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(0, 0, w, h);
+
+  // Find min fret to display
+  const minFret = Math.min(...frets.filter(f => f > 0));
+  const offset = minFret > 3 ? minFret - 1 : 0;
+
+  // Nut
+  ctx.fillStyle = offset === 0 ? '#333' : 'transparent';
+  ctx.fillRect(margin, margin + 18, strW * 5, offset === 0 ? 4 : 0);
+
+  if (offset > 0) {
+    ctx.fillStyle = '#888';
+    ctx.font = `${small ? 10 : 11}px 'DM Mono', monospace`;
+    ctx.fillText(offset + 1 + 'fr', 2, margin + 22);
+  }
+
+  // Grid lines (frets)
+  ctx.strokeStyle = '#ccc';
+  ctx.lineWidth = 1;
+  for (let f = 0; f <= dots; f++) {
+    ctx.beginPath();
+    ctx.moveTo(margin, margin + 20 + f * fretH);
+    ctx.lineTo(margin + strW * 5, margin + 20 + f * fretH);
+    ctx.stroke();
+  }
+
+  // Grid lines (strings)
+  for (let s = 0; s <= 5; s++) {
+    ctx.beginPath();
+    ctx.moveTo(margin + s * strW, margin + 20);
+    ctx.lineTo(margin + s * strW, margin + 20 + dots * fretH);
+    ctx.stroke();
+  }
+
+  // Dots
+  frets.forEach((fret, s) => {
+    const x = margin + (5 - s) * strW;
+    if (fret === -1) {
+      // Muted
+      ctx.fillStyle = '#cc4040';
+      ctx.font = `${small ? 11 : 13}px sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.fillText('×', x, margin + 13);
+    } else if (fret === 0) {
+      // Open
+      ctx.strokeStyle = '#3a8c5a';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.arc(x, margin + 10, small ? 4 : 5, 0, Math.PI * 2);
+      ctx.stroke();
+    } else {
+      const adjustedFret = fret - offset;
+      const y = margin + 20 + (adjustedFret - 0.5) * fretH;
+      ctx.fillStyle = '#c17f3a';
+      ctx.beginPath();
+      ctx.arc(x, y, small ? 7 : 9, 0, Math.PI * 2);
+      ctx.fill();
+      if (fingers[s] > 0) {
+        ctx.fillStyle = 'white';
+        ctx.font = `${small ? 8 : 10}px 'DM Sans', sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(fingers[s], x, y);
+      }
+    }
+  });
+  ctx.textBaseline = 'alphabetic';
+}
+
+function initChords() {
+  renderChordGrid('all');
+}
+
+function filterChords(type, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderChordGrid(type);
+}
+
+function renderChordGrid(filter) {
+  const grid = document.getElementById('chord-grid');
+  grid.innerHTML = '';
+  const filtered = filter === 'all' ? CHORDS :
+    filter === 'beginner' ? CHORDS.filter(c => c.level === 'beginner') :
+    CHORDS.filter(c => c.type === filter);
+
+  filtered.forEach(chord => {
+    const card = document.createElement('div');
+    card.className = 'chord-card';
+    card.onclick = () => openChordDetail(chord, card);
+
+    const nameEl = document.createElement('div');
+    nameEl.className = 'chord-name';
+    nameEl.textContent = chord.name;
+
+    const fullEl = document.createElement('div');
+    fullEl.className = 'chord-full-name';
+    fullEl.textContent = chord.full;
+
+    const canvas = document.createElement('canvas');
+    canvas.width = 100; canvas.height = 110;
+    canvas.style.cssText = 'border-radius:6px;border:1px solid var(--border);';
+
+    const fingEl = document.createElement('div');
+    fingEl.className = 'chord-fingering';
+    fingEl.textContent = chord.frets.map(f => f === -1 ? 'x' : f).join(' ');
+
+    const lvl = document.createElement('span');
+    lvl.className = 'tag ' + chord.level;
+    lvl.textContent = chord.level;
+
+    card.append(nameEl, fullEl, canvas, fingEl, lvl);
+    grid.appendChild(card);
+
+    requestAnimationFrame(() => drawChordDiagram(canvas, chord.frets, chord.fingers, true));
+  });
+}
+
+function openChordDetail(chord, card) {
+  currentDetailChord = chord;
+  const detail = document.getElementById('chord-detail');
+  detail.style.display = 'block';
+
+  document.getElementById('detail-name').textContent = chord.name;
+  document.getElementById('detail-fullname').textContent = chord.full;
+  document.getElementById('detail-desc').textContent = chord.desc;
+  document.getElementById('detail-fingering').textContent = chord.frets.map(f => f === -1 ? 'x' : f).join('-');
+  document.getElementById('detail-songs').textContent = chord.songs;
+
+  const canvas = document.getElementById('chord-detail-canvas');
+  drawChordDiagram(canvas, chord.frets, chord.fingers, false);
+
+  // Auto play
+  playChord(chord.frets);
+  card.classList.add('playing');
+  setTimeout(() => card.classList.remove('playing'), 1500);
+
+  detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function playDetailChord() {
+  if (currentDetailChord) playChord(currentDetailChord.frets);
+}
+
+// ══════════════════════════════════════
+//  EXERCISES
+// ══════════════════════════════════════
+const SUGGESTED_EXERCISES = [
+  { name: 'Em-Am Transition', duration: 10, level: 'beginner', type: 'chord', desc: 'Em se Am mein switch karo, smooth transition ke liye practice karo. Pehle dheere, phir speed badhao.', chords: 'Em, Am', bpm: 60 },
+  { name: 'C-G-Am-F Progression', duration: 15, level: 'beginner', type: 'chord', desc: 'Sabse popular chord progression! Yeh 4 chords se hazaaron songs bante hain.', chords: 'C, G, Am, F', bpm: 70 },
+  { name: 'Down Strum Basics', duration: 10, level: 'beginner', type: 'strumming', desc: 'Sirf down strum. D-D-D-D pattern. Metronome ke saath practice karo.', chords: 'Em', bpm: 80 },
+  { name: 'D-Du-Du Strumming', duration: 12, level: 'beginner', type: 'strumming', desc: 'Down-Down-Up pattern. Bohot common strumming hai.', chords: 'G, Em', bpm: 75 },
+  { name: 'Finger Warmup', duration: 5, level: 'beginner', type: 'warmup', desc: '1-2-3-4 pattern. Har string pe 1st se 4th fret tak ek ek ungli lagao.', chords: '', bpm: 60 },
+  { name: 'F Chord Practice', duration: 20, level: 'intermediate', type: 'chord', desc: 'F chord ek barre chord hai. Pehle sirf 1st aur 2nd string pe practice karo.', chords: 'F, C', bpm: 60 },
+  { name: 'Pentatonic Scale', duration: 15, level: 'intermediate', type: 'scale', desc: 'A minor pentatonic scale - blues aur rock ke liye essential!', chords: '', bpm: 80 },
+];
+
+function initExercises() {
+  renderSuggestedExercises();
+  renderExerciseList();
+}
+
+function renderSuggestedExercises() {
+  const container = document.getElementById('suggested-exercises');
+  container.innerHTML = SUGGESTED_EXERCISES.map(ex => `
+    <div class="ex-item">
+      <div class="ex-item-header">
+        <div class="ex-item-name">${ex.name}</div>
+        <div style="display:flex;gap:6px;align-items:center">
+          <span class="tag ${ex.level}">${ex.level}</span>
+          <span class="tag">${ex.type}</span>
+        </div>
+      </div>
+      <div class="ex-item-meta">
+        <span>⏱️ ${ex.duration} min</span>
+        ${ex.bpm ? `<span>🎵 ${ex.bpm} BPM</span>` : ''}
+        ${ex.chords ? `<span>🤚 ${ex.chords}</span>` : ''}
+      </div>
+      <div class="ex-item-desc">${ex.desc}</div>
+      <div class="ex-item-actions">
+        <button class="btn btn-outline btn-sm" onclick="addToMyExercises('${ex.name}')">+ My List Mein Add Karo</button>
+        ${ex.chords.split(',').map(c => c.trim()).filter(Boolean).map(c => `<button class="btn btn-sm" style="background:var(--accent-light);color:var(--accent);border:1px solid var(--accent);border-radius:6px;padding:5px 10px;font-size:12px;cursor:pointer" onclick="showAndPlayChord('${c}')">${c}</button>`).join('')}
+      </div>
+    </div>`).join('');
+}
+
+function addToMyExercises(name) {
+  const ex = SUGGESTED_EXERCISES.find(e => e.name === name);
+  if (!ex) return;
+  const exercises = load('exercises', []);
+  if (exercises.find(e => e.name === name)) { showToast('Already saved!'); return; }
+  exercises.push({ ...ex, id: Date.now() });
+  save('exercises', exercises);
+  renderExerciseList();
+  showToast(name + ' saved! ✅');
+}
+
+function saveExercise() {
+  const name = document.getElementById('ex-name').value.trim();
+  if (!name) { showToast('Exercise ka naam dalo!'); return; }
+  const exercises = load('exercises', []);
+  exercises.push({
+    id: Date.now(),
+    name,
+    duration: parseInt(document.getElementById('ex-duration').value) || 10,
+    level: document.getElementById('ex-level').value,
+    type: document.getElementById('ex-type').value,
+    desc: document.getElementById('ex-desc').value.trim(),
+    chords: document.getElementById('ex-chords').value.trim(),
+    bpm: document.getElementById('ex-bpm').value || '',
+  });
+  save('exercises', exercises);
+  renderExerciseList();
+  document.getElementById('ex-name').value = '';
+  document.getElementById('ex-desc').value = '';
+  document.getElementById('ex-chords').value = '';
+  document.getElementById('ex-bpm').value = '';
+  showToast('Exercise saved! 💪');
+}
+
+function renderExerciseList() {
+  const exercises = load('exercises', []);
+  document.getElementById('ex-count').textContent = exercises.length + ' exercises';
+  const container = document.getElementById('ex-list');
+  if (!exercises.length) {
+    container.innerHTML = '<div style="text-align:center;padding:30px;color:var(--text3);font-size:14px">Koi exercise nahi.<br>Pehla exercise banao! 🎸</div>';
+    return;
+  }
+  container.innerHTML = exercises.map(ex => `
+    <div class="ex-item">
+      <div class="ex-item-header">
+        <div class="ex-item-name">${ex.name}</div>
+        <span class="tag ${ex.level}">${ex.level}</span>
+      </div>
+      <div class="ex-item-meta">
+        <span>⏱️ ${ex.duration} min</span>
+        ${ex.bpm ? `<span>🎵 ${ex.bpm} BPM</span>` : ''}
+        <span>📂 ${ex.type}</span>
+      </div>
+      ${ex.desc ? `<div class="ex-item-desc">${ex.desc}</div>` : ''}
+      <div class="ex-item-actions">
+        <button class="btn btn-danger btn-sm" onclick="deleteExercise(${ex.id})">🗑️ Delete</button>
+        ${(ex.chords||'').split(',').map(c => c.trim()).filter(Boolean).map(c => `<button class="btn btn-sm" style="background:var(--accent-light);color:var(--accent);border:1px solid var(--accent);border-radius:6px;padding:5px 10px;font-size:12px;cursor:pointer" onclick="showAndPlayChord('${c}')">${c}</button>`).join('')}
+      </div>
+    </div>`).join('');
+}
+
+function deleteExercise(id) {
+  let exercises = load('exercises', []);
+  exercises = exercises.filter(e => e.id !== id);
+  save('exercises', exercises);
+  renderExerciseList();
+  showToast('Exercise deleted');
+}
+
+function showAndPlayChord(name) {
+  const chord = CHORDS.find(c => c.name === name.trim());
+  if (chord) {
+    showSection('chords', document.querySelectorAll('nav button')[2]);
+    setTimeout(() => {
+      const cards = document.querySelectorAll('.chord-card');
+      cards.forEach(card => {
+        if (card.querySelector('.chord-name')?.textContent === name.trim()) {
+          openChordDetail(chord, card);
+        }
+      });
+    }, 100);
+  }
+}
+
+// ══════════════════════════════════════
+//  PRACTICE LOG
+// ══════════════════════════════════════
+function initPracticeLog() {
+  document.getElementById('log-date').value = new Date().toISOString().split('T')[0];
+  renderLogList();
+  renderGoals();
+}
+
+function saveLogEntry() {
+  const title = document.getElementById('log-title').value.trim();
+  if (!title) { showToast('Kya kiya? Title dalo!'); return; }
+  const logs = load('logs', []);
+  logs.unshift({
+    id: Date.now(),
+    date: document.getElementById('log-date').value,
+    title,
+    duration: parseInt(document.getElementById('log-duration').value) || 20,
+    mood: document.getElementById('log-mood').value,
+    notes: document.getElementById('log-notes').value.trim(),
+    chords: document.getElementById('log-chords').value.trim(),
+  });
+  save('logs', logs);
+  renderLogList();
+  updateDashboard();
+  renderWeekDots();
+  document.getElementById('log-title').value = '';
+  document.getElementById('log-notes').value = '';
+  document.getElementById('log-chords').value = '';
+  showToast('Session logged! 🎉');
+}
+
+function renderLogList() {
+  const logs = load('logs', []);
+  const totalMins = logs.reduce((a,b) => a + (b.duration||0), 0);
+  const hrs = Math.floor(totalMins / 60), mins = totalMins % 60;
+  document.getElementById('total-practice-time').textContent =
+    `Total: ${hrs}h ${mins}m practiced`;
+
+  const container = document.getElementById('log-list');
+  if (!logs.length) {
+    container.innerHTML = '<div style="text-align:center;padding:30px;color:var(--text3);font-size:14px">Abhi koi entry nahi.<br>Pehla session log karo! 🎸</div>';
+    return;
+  }
+  container.innerHTML = logs.slice(0, 20).map(log => `
+    <div class="log-item">
+      <div class="log-item-date">${formatDate(log.date)}</div>
+      <div class="log-item-title">${log.title}</div>
+      ${log.notes ? `<div class="log-item-details">${log.notes}</div>` : ''}
+      <div class="log-stats">
+        <span class="log-stat">⏱️ ${log.duration} min</span>
+        <span class="log-stat">${'⭐'.repeat(log.mood)}</span>
+        ${log.chords ? `<span class="log-stat">🤚 ${log.chords}</span>` : ''}
+      </div>
+      <div style="margin-top:8px">
+        <button class="btn btn-danger btn-sm" onclick="deleteLog(${log.id})">Delete</button>
+      </div>
+    </div>`).join('');
+}
+
+function deleteLog(id) {
+  let logs = load('logs', []);
+  logs = logs.filter(l => l.id !== id);
+  save('logs', logs);
+  renderLogList();
+  updateDashboard();
+  renderWeekDots();
+}
+
+function addGoal() {
+  const name = document.getElementById('goal-name').value.trim();
+  if (!name) { showToast('Goal ka naam dalo!'); return; }
+  const goals = load('goals', []);
+  goals.push({
+    id: Date.now(),
+    name,
+    target: parseInt(document.getElementById('goal-target').value) || 30,
+    progress: 0,
+    created: new Date().toISOString().split('T')[0],
+  });
+  save('goals', goals);
+  renderGoals();
+  document.getElementById('goal-name').value = '';
+  showToast('Goal added! 🎯');
+}
+
+function renderGoals() {
+  const goals = load('goals', []);
+  const container = document.getElementById('goals-list');
+  if (!goals.length) {
+    container.innerHTML = '<div style="text-align:center;padding:16px;color:var(--text3);font-size:14px">Koi goal set nahi hua</div>';
+    return;
+  }
+  container.innerHTML = goals.map(g => `
+    <div class="goal-item">
+      <div class="goal-header">
+        <div class="goal-name">${g.name}</div>
+        <div class="goal-pct">${g.progress}%</div>
+      </div>
+      <div style="margin-bottom:8px;font-size:12px;color:var(--text3)">Target: ${g.target} days • Added: ${g.created}</div>
+      <div class="progress-bar-wrap"><div class="progress-bar" style="width:${g.progress}%"></div></div>
+      <div style="display:flex;gap:6px;margin-top:8px">
+        <button class="btn btn-outline btn-sm" onclick="updateGoalProgress(${g.id}, Math.min(100, ${g.progress} + 10))">+10%</button>
+        <button class="btn btn-outline btn-sm" onclick="updateGoalProgress(${g.id}, Math.min(100, ${g.progress} + 25))">+25%</button>
+        <button class="btn btn-green btn-sm" onclick="updateGoalProgress(${g.id}, 100)">Complete ✓</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteGoal(${g.id})">Delete</button>
+      </div>
+    </div>`).join('');
+}
+
+function updateGoalProgress(id, pct) {
+  const goals = load('goals', []);
+  const g = goals.find(x => x.id === id);
+  if (g) { g.progress = pct; save('goals', goals); renderGoals(); }
+}
+
+function deleteGoal(id) {
+  let goals = load('goals', []);
+  goals = goals.filter(g => g.id !== id);
+  save('goals', goals);
+  renderGoals();
+}
+
+function formatDate(ds) {
+  const d = new Date(ds);
+  return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+// ══════════════════════════════════════
+//  TUNER
+// ══════════════════════════════════════
+const TUNINGS = {
+  standard: { name: 'Standard', freqs: [82.41, 110.00, 146.83, 196.00, 246.94, 329.63], notes: ['E2','A2','D3','G3','B3','E4'] },
+  drop_d:   { name: 'Drop D',   freqs: [73.42, 110.00, 146.83, 196.00, 246.94, 329.63], notes: ['D2','A2','D3','G3','B3','E4'] },
+  open_g:   { name: 'Open G',   freqs: [73.42, 97.99, 146.83, 196.00, 246.94, 293.66], notes: ['D2','G2','D3','G3','B3','D4'] },
+  open_d:   { name: 'Open D',   freqs: [73.42, 110.00, 146.83, 185.00, 220.00, 293.66], notes: ['D2','A2','D3','F#3','A3','D4'] },
+  dadgad:   { name: 'DADGAD',   freqs: [73.42, 110.00, 146.83, 196.00, 220.00, 293.66], notes: ['D2','A2','D3','G3','A3','D4'] },
+};
+let currentTuning = TUNINGS.standard;
+let tunerActive = false;
+let tunerStream = null;
+let tunerAnalyser = null;
+let tunerAudioCtx = null;
+let tunerAnimFrame = null;
+let activeRefNote = null;
+
+function setTuning(key) {
+  currentTuning = TUNINGS[key];
+  renderRefStrings();
+  showToast(currentTuning.name + ' tuning set!');
+}
+
+function renderRefStrings() {
+  const container = document.getElementById('ref-string-list');
+  container.innerHTML = currentTuning.freqs.map((freq, i) => `
+    <div class="ref-string-item">
+      <div class="ref-num">${6 - i}</div>
+      <div class="ref-note">${currentTuning.notes[i]}</div>
+      <div class="ref-freq-text">${freq.toFixed(2)} Hz</div>
+      <button class="ref-play-btn" id="ref-btn-${i}" onclick="playRefNote(${i}, ${freq})" title="Play reference note">▶</button>
+    </div>`).join('');
+}
+
+function playRefNote(idx, freq) {
+  // Stop previous
+  if (activeRefNote !== null) {
+    const prevBtn = document.getElementById('ref-btn-' + activeRefNote);
+    if (prevBtn) prevBtn.classList.remove('active');
+  }
+  activeRefNote = idx;
+  const btn = document.getElementById('ref-btn-' + idx);
+  if (btn) btn.classList.add('active');
+  playNote(freq, 3.0, 0.6);
+  setTimeout(() => {
+    if (btn) btn.classList.remove('active');
+    if (activeRefNote === idx) activeRefNote = null;
+  }, 3000);
+}
+
+async function startTuner() {
+  try {
+    tunerAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    tunerStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+    const source = tunerAudioCtx.createMediaStreamSource(tunerStream);
+    tunerAnalyser = tunerAudioCtx.createAnalyser();
+    tunerAnalyser.fftSize = 2048;
+    source.connect(tunerAnalyser);
+    tunerActive = true;
+    document.getElementById('tuner-start-btn').style.display = 'none';
+    document.getElementById('tuner-stop-btn').style.display = 'inline-flex';
+    document.getElementById('tuner-status').textContent = '🎙️ Listening...';
+    document.getElementById('tuner-status').className = 'tuner-status listening';
+    detectPitch();
+  } catch (e) {
+    showToast('Microphone access nahi mili. Permission do!');
+  }
+}
+
+function stopTuner() {
+  tunerActive = false;
+  if (tunerStream) tunerStream.getTracks().forEach(t => t.stop());
+  if (tunerAudioCtx) tunerAudioCtx.close();
+  if (tunerAnimFrame) cancelAnimationFrame(tunerAnimFrame);
+  document.getElementById('tuner-start-btn').style.display = 'inline-flex';
+  document.getElementById('tuner-stop-btn').style.display = 'none';
+  document.getElementById('tuner-note').textContent = '—';
+  document.getElementById('tuner-freq').textContent = '— Hz';
+  document.getElementById('tuner-cents').textContent = '— cents';
+  document.getElementById('tuner-cents').className = 'tuner-cents';
+  document.getElementById('tuner-status').textContent = 'Mic start karo';
+  document.getElementById('tuner-status').className = 'tuner-status listening';
+  document.getElementById('tuner-needle').style.transform = 'rotate(0deg)';
+}
+
+function detectPitch() {
+  if (!tunerActive) return;
+  const buffer = new Float32Array(tunerAnalyser.fftSize);
+  tunerAnalyser.getFloatTimeDomainData(buffer);
+  const freq = autoCorrelate(buffer, tunerAudioCtx.sampleRate);
+
+  if (freq > 50 && freq < 2000) {
+    const info = freqToNote(freq);
+    const closestString = findClosestString(freq);
+    document.getElementById('tuner-note').textContent = info.note + info.octave;
+    document.getElementById('tuner-freq').textContent = freq.toFixed(1) + ' Hz';
+
+    const cents = info.cents;
+    document.getElementById('tuner-cents').textContent =
+      (cents >= 0 ? '+' : '') + cents + ' cents';
+
+    const angle = Math.max(-45, Math.min(45, cents * 0.9));
+    document.getElementById('tuner-needle').style.transform = `rotate(${angle}deg)`;
+
+    const centsEl = document.getElementById('tuner-cents');
+    const statusEl = document.getElementById('tuner-status');
+    if (Math.abs(cents) < 8) {
+      centsEl.className = 'tuner-cents in-tune';
+      statusEl.textContent = '✅ In Tune!';
+      statusEl.className = 'tuner-status in-tune';
+    } else if (cents < 0) {
+      centsEl.className = 'tuner-cents flat';
+      statusEl.textContent = '♭ Flat — peg tight karo';
+      statusEl.className = 'tuner-status flat';
+    } else {
+      centsEl.className = 'tuner-cents sharp';
+      statusEl.textContent = '♯ Sharp — peg loose karo';
+      statusEl.className = 'tuner-status sharp';
+    }
+  }
+
+  tunerAnimFrame = requestAnimationFrame(detectPitch);
+}
+
+function autoCorrelate(buffer, sampleRate) {
+  let SIZE = buffer.length;
+  let sumOfSquares = 0;
+  for (let i = 0; i < SIZE; i++) sumOfSquares += buffer[i] * buffer[i];
+  if (sumOfSquares / SIZE < 0.001) return -1;
+
+  let r1 = 0, r2 = SIZE - 1;
+  const threshold = 0.2;
+  for (let i = 0; i < SIZE / 2; i++) if (Math.abs(buffer[i]) < threshold) { r1 = i; break; }
+  for (let i = 1; i < SIZE / 2; i++) if (Math.abs(buffer[SIZE - i]) < threshold) { r2 = SIZE - i; break; }
+  buffer = buffer.slice(r1, r2);
+  SIZE = buffer.length;
+
+  const c = new Array(SIZE).fill(0);
+  for (let i = 0; i < SIZE; i++)
+    for (let j = 0; j < SIZE - i; j++)
+      c[i] = c[i] + buffer[j] * buffer[j + i];
+
+  let d = 0;
+  while (c[d] > c[d + 1]) d++;
+  let maxval = -1, maxpos = -1;
+  for (let i = d; i < SIZE; i++) {
+    if (c[i] > maxval) { maxval = c[i]; maxpos = i; }
+  }
+  let T0 = maxpos;
+
+  const x1 = c[T0 - 1], x2 = c[T0], x3 = c[T0 + 1];
+  const a = (x1 + x3 - 2 * x2) / 2;
+  const b = (x3 - x1) / 2;
+  if (a) T0 = T0 - b / (2 * a);
+  return sampleRate / T0;
+}
+
+function findClosestString(freq) {
+  let min = Infinity, idx = 0;
+  currentTuning.freqs.forEach((f, i) => {
+    const diff = Math.abs(Math.log2(freq / f));
+    if (diff < min) { min = diff; idx = i; }
+  });
+  return idx;
+}
+
+// ══════════════════════════════════════
+//  TOAST
+// ══════════════════════════════════════
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ══════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════
+window.addEventListener('load', () => {
+  initDashboard();
+  buildFretboard();
+  initChords();
+  initExercises();
+  initPracticeLog();
+  renderRefStrings();
+});
+</script>
+</body>
+</html>
